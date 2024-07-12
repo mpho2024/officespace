@@ -1,0 +1,31 @@
+.navtabs {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    background-color:#7ADFBB ;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    //border-radius: 8px;
+    padding: 10px 20px;
+    position: relative;
+  }
+  .navtab {
+    margin: 0 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #fff;
+    transition: color 0.3s;
+  }
+  .navtab:hover {
+    color: yellow;
+  }
+  .navtab.active {
+    color: yellow;
+    font-weight: 600;
+  }
+  .underline {
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background: #007BFF;
+    transition: left 0.3s ease, width 0.3s ease;
+  }
