@@ -1,0 +1,13 @@
+package com.office.oficeSpace;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class OficeSpaceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(OficeSpaceApplication.class, args);
+	}
+
+}
