@@ -1,0 +1,25 @@
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: --dimc1;
+    ;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+  }
+  
+  .navbar a:hover {
+    text-decoration: underline;
+  }
+  
+  .content {
+    padding-top: 4rem;
+  }
