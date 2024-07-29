@@ -1,15 +1,24 @@
-h1{
-    font-size: 50px;
-    font-weight:bolder;
-    color:white;
-    margin-top: 150px;
- }
- .fullscreen-background {
-     background-image: url('https://res.cloudinary.com/dmsthnbd3/image/upload/f_auto,q_auto/dhdmxuzatqju5q2xuwas'); 
+.home-container {
+    background-image: url('/assets/j.jpg');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    height: 50vh;
-    width: 100%;
-
-}
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 0 1rem;
+  }
+  
+  .catchy-text h1 {
+    font-size: 3rem;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  }
+  
+  .catchy-text p {
+    font-size: 1.5rem;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  }
