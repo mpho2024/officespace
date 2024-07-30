@@ -1,0 +1,71 @@
+img{
+    height:80px;
+    margin-left: 50px;
+}
+.card{
+    border: 1px solid #ccc;
+border-radius: 5px;
+padding: 10px;
+width: 400px;
+height:500px;
+background-color:#22333B;
+margin-left: 400px;
+margin-top: 50px;
+}
+h4{
+    color:white;
+}
+form {
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  div {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  small {
+    color: red;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+label{
+    color:white;
+}  
+.custom-button {
+    background-color:#AAA9AD;
+    color: black;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 120px;
+    margin-top: 40px; /* Adjust this to position the button as needed */
+  }
+  
+  .custom-button:hover {
+    background-color: #f0f0f0; /* Optional: Add a hover effect */
+  }
+  
