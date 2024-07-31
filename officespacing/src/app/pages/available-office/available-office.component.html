@@ -1,0 +1,40 @@
+<div class="container">
+  <form (ngSubmit)="onSubmit()">
+    <select [(ngModel)]="selectedOffice" name="offices" id="offices">
+      <option *ngFor="let office of offices" [value]="office">{{ office }}</option>
+    </select>
+    <br>
+    <br>
+    <button type="submit">Submit</button>
+  </form>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>EMAIL</th>
+        <th>Office Id</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+</div>

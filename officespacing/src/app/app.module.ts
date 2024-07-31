@@ -11,6 +11,9 @@ import { RegisterComponent } from './pages/register/register.component';
 
 import { CalendarComponent } from './pages/calendar/calendar.component';
 import { LoginComponent } from './pages/login/login.component';
+import { AvailableOfficeComponent } from './pages/available-office/available-office.component';
+import { FormsModule } from '@angular/forms';
+import { ContentComponent } from './pages/content/content.component';
 
 
 
@@ -24,12 +27,15 @@ import { LoginComponent } from './pages/login/login.component';
     DashboardComponent,
     RegisterComponent,
     CalendarComponent,
-    LoginComponent
+    LoginComponent,
+    AvailableOfficeComponent,
+    ContentComponent
   
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule
     
 
   ],
