@@ -1,9 +1,11 @@
 package com.office.oficeSpace.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+@Entity
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +19,7 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     // Getters and Setters
@@ -76,5 +79,4 @@ public class Booking {
     public void setUser(User user) {
         this.user = user;
     }
-
 }

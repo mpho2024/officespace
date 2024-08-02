@@ -1,10 +1,10 @@
-package com.office.oficeSpace.services.dtos;
+package com.office.oficeSpace.auth;
 
-public class LoginUserDto {
+public class AuthenticationRequest {
     private String email;
     private String password;
 
-    // Getters and Setters
+    // Getters
     public String getEmail() {
         return email;
     }
