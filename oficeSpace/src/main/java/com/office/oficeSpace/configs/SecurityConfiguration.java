@@ -47,12 +47,12 @@ public class SecurityConfiguration {
 
 
 
-                        .requestMatchers("/api/v1/auth/**", "/api/v1/auth/register", "/api/v1/auth/authenticate", "/api/v1/auth/reset-password", "/api/v1/auth/forgot-password" ,"/api/v1/demo-controller", "/api/bounty", "/api/bounty/**", "/api/reports", "/api/reports/**", "/orgProfile", "/orgProfile/**")
+                        .requestMatchers("/api/v1/auth/**", "/api/v1/auth/register", "/api/v1/auth/authenticate", "/api/booking", "/api/booking/**")
 
                         .permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/hunter/**").hasRole("HUNTER")
-                        .requestMatchers("/api/organization/**").hasRole("ORGANIZATION")
+                        .requestMatchers("/api/user/**").hasRole("USER")
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

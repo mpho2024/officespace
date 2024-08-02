@@ -1,29 +1,41 @@
 <div class="card">
     <div class="card-content">
-        <div class="left-side">
-            <img src="/../assets/off-Photoroom.png" alt="">
-        </div>
-        <div class="right-side">
-           <form class="registration-form">
-                <h2>Registration Form</h2>
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
-                
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-                            
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
-                        
-            <label for="password"> Confirm Password</label>
-            <input type="password" id="password" name="password" required>
-
-
-                
-                
-                <button type="submit">Register</button>
-            </form>
-        </div>
+      <div class="left-side">
+        <img src="/../assets/off-Photoroom.png" alt="">
+      </div>
+      <div class="right-side">
+        <form [formGroup]="regForm" (ngSubmit)="submit()" class="registration-form">
+          <h2>Registration Form</h2>
+  
+          <label for="name">Name</label>
+          <input type="text" id="name" formControlName="name" required>
+          <div *ngIf="submitted && regForm.get('name')?.invalid" class="error">Name is required.</div>
+  
+          <label for="lname">Surname</label>
+          <input type="text" id="lname" formControlName="lname" required>
+          <div *ngIf="submitted && regForm.get('lname')?.invalid" class="error">Surname is required.</div>
+  
+          <label for="email">Email</label>
+          <input type="email" id="email" formControlName="email" required>
+          <div *ngIf="submitted && regForm.get('email')?.invalid" class="error">Valid email is required.</div>
+  
+          <label for="password">Password</label>
+          <input type="password" id="password" formControlName="password" required>
+          <div *ngIf="submitted && regForm.get('password')?.invalid" class="error">Password is required and must be at least 8 characters long.</div>
+  
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" formControlName="confirmPassword" required>
+          <div *ngIf="PasswordMismatch && (submitted || regForm.get('confirmPassword')?.touched)" class="error">Passwords must match.</div>
+  
+          <label>
+            <input type="checkbox" formControlName="agreeTerms" required>
+            I agree to the terms and conditions
+          </label>
+          <div *ngIf="submitted && regForm.get('agreeTerms')?.invalid" class="error">You must agree to the terms and conditions.</div>
+  
+          <button type="submit" routerLink="/login">Register</button>
+        </form>
+      </div>
     </div>
-</div>
- 
+  </div>
+  

@@ -5,8 +5,9 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     display: flex;
+   
     margin: 200px auto;
-    height: 500px; /* Adjust height as needed */
+    height: 600px; /* Adjust height as needed */
     flex-direction: row; /* Set default direction for larger screens */
 }
 
@@ -81,6 +82,7 @@ img {
 /* Media Query for smaller screens */
 @media (max-width: 768px) {
     .card {
+      
         flex-direction: column;
         height: auto;
         margin: 50px auto; /* Adjust top margin for mobile */
@@ -112,7 +114,8 @@ img {
 
 @media (max-width: 480px) {
     .card {
-        height:400px;
+       
+        height:550px;
         width: 95%; /* Make card take almost full width on very small screens */
         margin: 20px auto; /* Adjust top margin for very small screens */
     }

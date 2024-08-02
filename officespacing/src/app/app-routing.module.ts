@@ -10,6 +10,9 @@ import { AvailableOfficeComponent } from './pages/available-office/available-off
 import { ContentComponent } from './pages/content/content.component';
 
 const routes: Routes = [
+    
+  { path: '', component: HomeComponent },
+      
   {path:'home',component:HomeComponent},
   {path:'navbar',component:NavbarComponent},
   {path:'register',component:RegisterComponent},

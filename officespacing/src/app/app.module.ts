@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -12,8 +12,9 @@ import { RegisterComponent } from './pages/register/register.component';
 import { CalendarComponent } from './pages/calendar/calendar.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AvailableOfficeComponent } from './pages/available-office/available-office.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContentComponent } from './pages/content/content.component';
+import { AuthInterceptorService } from './auth-interceptor.service';
 
 
 
@@ -35,11 +36,12 @@ import { ContentComponent } from './pages/content/content.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
-    
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule
 
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
