@@ -36,7 +36,7 @@ export class AuthService {
     const token = this.getToken();
     if (token) {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.userId; 
+      return payload.userId;
     }
     return null;
   }
@@ -51,8 +51,8 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token'); 
-    this.router.navigate(['/']); 
+    localStorage.removeItem('token');
+    this.router.navigate(['/']);
   }
 
   isAuthenticated(): boolean {
@@ -63,7 +63,5 @@ export class AuthService {
     const userRole = this.getRoleFromToken();
     return userRole === role;
   }
-
-  
-
 }
+

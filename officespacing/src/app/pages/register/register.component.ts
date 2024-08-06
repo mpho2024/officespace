@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/auth.service'; // Ensure this import path is correct
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -8,19 +8,19 @@ import { AuthService } from 'src/app/auth.service'; // Ensure this import path i
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  regForm!: FormGroup; // Changed to regForm to match HTML
+  regForm!: FormGroup;
   submitted = false;
+  errorMessage: string | null = null;
 
   constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.regForm = this.fb.group({
-      name: ['', [Validators.required]],
-      lname: ['', [Validators.required]],
+      firstname: ['', [Validators.required]],
+      lastname: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', [Validators.required]],
-      agreeTerms: [false, [Validators.requiredTrue]]
+      confirmPassword: ['', [Validators.required]]
     }, {
       validators: this.passwordMatchValidation
     });
@@ -42,22 +42,27 @@ export class RegisterComponent implements OnInit {
 
   submit() {
     this.submitted = true;
+    this.errorMessage = null;
     if (this.regForm.valid) {
       const registrationData = {
-        firstname: this.regForm.value.name,
-        lastname: this.regForm.value.lname,
+        firstname: this.regForm.value.firstname,
+        lastname: this.regForm.value.lastname,
         email: this.regForm.value.email,
         password: this.regForm.value.password,
         role: "USER"
       };
 
-      this.authService.register(registrationData).subscribe(res => {
-        if (res.token !== null) {
-          setTimeout(() => {
-            window.location.href = '/login';
-          }, 2000);
-        } else {
-          // Handle registration error
+      this.authService.register(registrationData).subscribe({
+        next: res => {
+          if (res.token) {
+            localStorage.setItem('token', res.token);
+            setTimeout(() => {
+              window.location.href = '/login';
+            }, 2000);
+          }
+        },
+        error: err => {
+          this.errorMessage = err.error?.message || 'Registration failed. Please try again.';
         }
       });
     }
