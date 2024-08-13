@@ -1,26 +1,53 @@
-<div class="home-container">
-<div class="card">
-<br>
-<h1>Book Space</h1>
+
+<div class='demo-app'>
+
+  <div class='demo-app-sidebar'>
+    <div class='demo-app-sidebar-section'>
+      <h2>Instructions</h2>
+      <ul>
+        <li>Select dates and you will be prompted to create a new event</li>
+        <li>Drag, drop, and resize events</li>
+        <li>Click an event to delete it</li>
+      </ul>
+    </div>
+    <div class='demo-app-sidebar-section'>
       <label>
-            Name
-            <input type="text" name="name" required>
-          </label>
-          <div class="two-cols">
-            <label>
-              Email address
-              <input type="email" name="email" required>
-            </label>
-            <label>
-              Phone number
-              <input type="tel" name="phone">
-            </label>
-            <label>
-                  Office name
-                  <input type="name" name="phone">
-                </label>
-            <h4>Select date and time: </h4>
-      <input type="datetime-local" />
-      <button class="custom-button">Submit</button>    
-</div>
+        <input
+          type='checkbox'
+          [checked]='calendarVisible'
+          (change)='handleCalendarToggle()'
+        />
+        toggle whole calendar
+      </label>
+    </div>
+    <div class='demo-app-sidebar-section'>
+      <label>
+        <input
+          type='checkbox'
+          [checked]='calendarOptions().weekends'
+          (change)='handleWeekendsToggle()'
+        />
+        toggle weekends
+      </label>
+    </div>
+    <div class='demo-app-sidebar-section'>
+      <h2>All Events ({{currentEvents.length}})</h2>
+      <ul>
+        <li *ngFor='let event of currentEvents()'>
+          <b>{{event.startStr}}</b>
+          <i>{{event.title}}</i>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class='demo-app-main'>
+    <full-calendar *ngIf='calendarVisible()' [options]='calendarOptions()'>
+      <ng-template #eventContent let-arg>
+        <b>{{ arg.timeText }}</b>
+        <i>{{ arg.event.title }}</i>
+      </ng-template>
+    </full-calendar>
+  </div>
+
 </div>

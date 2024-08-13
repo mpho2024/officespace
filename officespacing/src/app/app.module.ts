@@ -8,13 +8,14 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './pages/home/home.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { RegisterComponent } from './pages/register/register.component';
-
+import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarComponent } from './pages/calendar/calendar.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AvailableOfficeComponent } from './pages/available-office/available-office.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContentComponent } from './pages/content/content.component';
 import { AuthInterceptorService } from './auth-interceptor.service';
+
 
 
 
@@ -38,7 +39,8 @@ import { AuthInterceptorService } from './auth-interceptor.service';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FullCalendarModule
 
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },],
