@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-content">
     <div class="left-side">
-      <img src="/../assets/off-Photoroom.png" alt="">
+      <img src="/../assets/off-Photoroom.png" alt="Registration Image">
     </div>
     <div class="right-side">
       <form [formGroup]="regForm" (ngSubmit)="submit()" class="registration-form">
@@ -25,7 +25,7 @@
 
         <label for="confirmPassword">Confirm Password</label>
         <input type="password" id="confirmPassword" formControlName="confirmPassword" required>
-        <div *ngIf="PasswordMismatch && (submitted || regForm.get('confirmPassword')?.touched)" class="error">Passwords must match.</div>
+        <div *ngIf="submitted && PasswordMismatch" class="error">Passwords must match.</div>
 
         <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 

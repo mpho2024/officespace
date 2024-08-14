@@ -16,11 +16,11 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.regForm = this.fb.group({
-      firstname: ['', [Validators.required]],
-      lastname: ['', [Validators.required]],
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', [Validators.required]]
+      confirmPassword: ['', Validators.required]
     }, {
       validators: this.passwordMatchValidation
     });
@@ -43,6 +43,7 @@ export class RegisterComponent implements OnInit {
   submit() {
     this.submitted = true;
     this.errorMessage = null;
+
     if (this.regForm.valid) {
       const registrationData = {
         firstname: this.regForm.value.firstname,
@@ -60,9 +61,6 @@ export class RegisterComponent implements OnInit {
               window.location.href = '/login';
             }, 2000);
           }
-        },
-        error: err => {
-          this.errorMessage = err.error?.message || 'Registration failed. Please try again.';
         }
       });
     }

@@ -41,7 +41,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.register(request));
     }
 
-    @CrossOrigin(origins = "http://localhost:4200/**", allowCredentials = "true")
+   // @CrossOrigin(origins = "http://localhost:4200/**", allowCredentials = "true")
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request
