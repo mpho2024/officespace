@@ -1,55 +1,77 @@
 <app-navbar></app-navbar>
-<div class='demo-app'>
+<div class="demo-app">
 
-  <div class='demo-app-sidebar'>
-   
-    <div class='demo-app-sidebar-section'>
+  <div class="demo-app-sidebar">
+
+    <div class="demo-app-sidebar-section">
       <label>
         <input
-          type='checkbox'
-          [checked]='calendarVisible'
-          (change)='handleCalendarToggle()'
+          type="checkbox"
+          [checked]="calendarVisible"
+          (change)="handleCalendarToggle()"
         />
-        toggle whole calendar
+        Toggle whole calendar
       </label>
-  
-    
+
       <label>
         <input
-          type='checkbox'
-          [checked]='calendarOptions().weekends'
-          (change)='handleWeekendsToggle()'
+          type="checkbox"
+          [checked]="calendarOptions().weekends"
+          (change)="handleWeekendsToggle()"
         />
-        toggle weekends
+        Toggle weekends
       </label>
-   
-   
+
       <h2>All Events ({{currentEvents.length}})</h2>
       <ul>
-        <li *ngFor='let event of currentEvents()'>
+        <li *ngFor="let event of currentEvents()">
           <b>{{event.startStr}}</b>
-          <i>{{event.title}}</i> - <span>{{event.extendedProps['officeName']}}</span>
+          <i>{{event.title}} - {{event.extendedProps['officeName']}}</i>
         </li>
       </ul>
-   
-   
+
       <label>
         <input
-          type='color'
-          id='colorpicker'
-          [(ngModel)]='eventColor'
-          (change)='handleColorChange()'
+          type="color"
+          id="colorpicker"
+          [(ngModel)]="eventColor"
+          (change)="handleColorChange()"
         />
         Select event color
       </label>
     </div>
+
+    <!-- Event form (displayed when a date is selected) -->
+    <div class="event-form" *ngIf="showEventForm">
+      <h3>Add New Event</h3>
+      <form (ngSubmit)="onSubmitEvent()">
+        <!-- Event Title -->
+        <label for="title">Event Title</label>
+        <input type="text" id="title" [(ngModel)]="eventFormData.title" name="title" required>
+
+        <!-- Office Name -->
+        <label for="officeName">Office Name</label>
+        <input type="text" id="officeName" [(ngModel)]="eventFormData.officeName" name="officeName" required>
+
+        <!-- Number of Attendees -->
+        <label for="attendees">Number of Attendees</label>
+        <input type="number" id="attendees" [(ngModel)]="eventFormData.attendees" name="attendees" min="1" required>
+
+        <!-- Event Color -->
+        <label for="color">Event Color</label>
+        <input type="color" id="color" [(ngModel)]="eventFormData.color" name="color">
+
+        <button class="submit" type="submit">Add Event</button>
+        <button  class= "button" type="button" (click)="cancelEvent()">Cancel</button>
+      </form>
+    </div>
   </div>
 
-  <div class='demo-app-main'>
-    <full-calendar *ngIf='calendarVisible()' [options]='calendarOptions()'>
+  <div class="demo-app-main">
+    <full-calendar *ngIf="calendarVisible()" [options]="calendarOptions()">
       <ng-template #eventContent let-arg>
         <b>{{ arg.timeText }}</b>
-        <i>{{ arg.event.title }}</i> - <span>{{ arg.event.extendedProps['officeName'] }}</span>
+        <i>{{ arg.event.title }} - {{ arg.event.extendedProps['officeName'] }} ({{ arg.event.extendedProps['attendees'] }} attendees)</i>
       </ng-template>
     </full-calendar>
   </div>

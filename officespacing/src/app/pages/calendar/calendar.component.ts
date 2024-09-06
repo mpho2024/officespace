@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectorRef } from '@angular/core';
+import { Component, signal, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -11,9 +11,20 @@ import { createEventId, INITIAL_EVENTS } from 'src/app/event-utils';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent {
+export class CalendarComponent implements AfterViewInit {
   calendarVisible = signal(true);
   eventColor = '#0000ff'; // Default color
+  showEventForm = false; // Control form visibility
+  selectedDateRange!: DateSelectArg; // Save selected date range
+
+  // Form data for new event
+  eventFormData = {
+    title: '',
+    officeName: '',
+    attendees: 0,
+    color: this.eventColor
+  };
+
   calendarOptions = signal<CalendarOptions>({
     plugins: [
       interactionPlugin,
@@ -38,12 +49,20 @@ export class CalendarComponent {
     eventsSet: this.handleEvents.bind(this),
     eventContent: this.eventContent.bind(this),
     eventDidMount: this.eventDidMount.bind(this),
-    // Adding responsive behavior
-    aspectRatio: window.innerWidth < 768 ? 1.0 : 1.35, // Adjust aspect ratio for mobile
+    aspectRatio: window.innerWidth < 768 ? 1.0 : 1.35,
   });
+
   currentEvents = signal<EventApi[]>([]);
 
   constructor(private changeDetector: ChangeDetectorRef) {}
+
+  ngAfterViewInit() {
+    // Set height dynamically if needed
+    const calendarEl = document.querySelector('.fc') as HTMLElement;
+    if (calendarEl) {
+      calendarEl.style.height = '70vh'; // Set height to 70% of the viewport height
+    }
+  }
 
   handleCalendarToggle() {
     this.calendarVisible.update((bool) => !bool);
@@ -56,26 +75,36 @@ export class CalendarComponent {
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('Please enter a new title for your event');
-    const officeName = prompt('Please enter the office name for your event');
+    this.showEventForm = true; // Show the form
+    this.selectedDateRange = selectInfo; // Save selected date range
+  }
 
-    const calendarApi = selectInfo.view.calendar;
+  cancelEvent() {
+    this.showEventForm = false; // Hide the form
+  }
 
-    calendarApi.unselect(); // clear date selection
+  onSubmitEvent() {
+    const { title, officeName, attendees, color } = this.eventFormData;
+    const calendarApi = this.selectedDateRange.view.calendar;
 
-    if (title && officeName) {
+    calendarApi.unselect(); // Clear date selection
+
+    if (title && officeName && attendees) {
       calendarApi.addEvent({
         id: createEventId(),
         title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-        backgroundColor: this.eventColor, // Apply the selected color
+        start: this.selectedDateRange.startStr,
+        end: this.selectedDateRange.endStr,
+        allDay: this.selectedDateRange.allDay,
+        backgroundColor: color, // Apply the selected color
         extendedProps: {
-          officeName: officeName
+          officeName,
+          attendees
         }
       });
     }
+
+    this.showEventForm = false; // Hide the form after submission
   }
 
   handleEventClick(clickInfo: EventClickArg) {
@@ -86,11 +115,11 @@ export class CalendarComponent {
 
   handleEvents(events: EventApi[]) {
     this.currentEvents.set(events);
-    this.changeDetector.detectChanges(); // workaround for ExpressionChangedAfterItHasBeenCheckedError
+    this.changeDetector.detectChanges(); // Update view
   }
 
   handleColorChange() {
-    // Optionally, handle any logic needed when the color changes
+    // Handle color change logic
     console.log('Selected color:', this.eventColor);
   }
 
@@ -98,13 +127,12 @@ export class CalendarComponent {
     return {
       html: `
         <b>${arg.timeText}</b>
-        <i>${arg.event.title}</i> - <span>${arg.event.extendedProps['officeName']}</span>
+        <i>${arg.event.title}</i> - <span>${arg.event.extendedProps['officeName']} (${arg.event.extendedProps['attendees']} attendees)</span>
       `
     };
   }
 
   eventDidMount(info: any) {
-    // Optional: Custom styling after event mount
     info.el.style.backgroundColor = info.event.backgroundColor;
   }
 }
