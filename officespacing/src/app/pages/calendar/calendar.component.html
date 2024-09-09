@@ -49,9 +49,15 @@
         <label for="title">Event Title</label>
         <input type="text" id="title" [(ngModel)]="eventFormData.title" name="title" required>
 
-        <!-- Office Name -->
+        <!-- Office Name Dropdown -->
         <label for="officeName">Office Name</label>
-        <input type="text" id="officeName" [(ngModel)]="eventFormData.officeName" name="officeName" required>
+        <select id="officeName" [(ngModel)]="eventFormData.officeName" name="officeName" required>
+          <option value="" disabled selected>Select an office</option>
+          <option value="Main Boardroom">Main Boardroom</option>
+          <option value="ED Building">ED Building</option>
+          <option value="Ayoba Room">Ayoba Room</option>
+          <option value="Dungeon">Dungeon</option>
+        </select>
 
         <!-- Number of Attendees -->
         <label for="attendees">Number of Attendees</label>
@@ -62,7 +68,7 @@
         <input type="color" id="color" [(ngModel)]="eventFormData.color" name="color">
 
         <button class="submit" type="submit">Add Event</button>
-        <button  class= "button" type="button" (click)="cancelEvent()">Cancel</button>
+        <button class="button" type="button" (click)="cancelEvent()">Cancel</button>
       </form>
     </div>
   </div>

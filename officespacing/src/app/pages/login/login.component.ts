@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/auth.service'; // Ensure this import path is correct
+import { AuthService } from 'src/app/services/auth.service'; // Ensure this import path is correct
 import Swal from 'sweetalert2'; // Import SweetAlert2
 
 @Component({
