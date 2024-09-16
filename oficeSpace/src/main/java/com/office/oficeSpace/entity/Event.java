@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
         private String title;
-        private String start;
-        private String end;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
         private boolean allDay;
         private String officeName;
         private String backgroundColor;

@@ -33,8 +33,8 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new RuntimeException("Event not found with id: " + id));
 
         event.setTitle(eventDetails.getTitle());
-        event.setStart(eventDetails.getStart());
-        event.setEnd(eventDetails.getEnd());
+        event.setStartDate(eventDetails.getStartDate());
+        event.setEndDate(eventDetails.getEndDate());
         event.setAllDay(eventDetails.isAllDay());
         event.setOfficeName(eventDetails.getOfficeName());
         event.setBackgroundColor(eventDetails.getBackgroundColor());
