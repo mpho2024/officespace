@@ -1,6 +1,8 @@
+// src/app/services/event.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Event } from '../models/event.model'; // Import the Event type
 
 @Injectable({
   providedIn: 'root'

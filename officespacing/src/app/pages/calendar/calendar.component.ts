@@ -1,17 +1,18 @@
-import { Component, signal, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, signal, ChangeDetectorRef, AfterViewInit, OnInit } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import { createEventId, INITIAL_EVENTS } from 'src/app/event-utils';
+import { EventService } from 'src/app/services/event.service';
+import { Event } from 'src/app/models/event.model';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent implements AfterViewInit {
+export class CalendarComponent implements AfterViewInit, OnInit {
   calendarVisible = signal(true);
   eventColor = '#0000ff'; // Default color
   showEventForm = false; // Control form visibility
@@ -38,7 +39,6 @@ export class CalendarComponent implements AfterViewInit {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS,
     weekends: true,
     editable: true,
     selectable: true,
@@ -54,14 +54,43 @@ export class CalendarComponent implements AfterViewInit {
 
   currentEvents = signal<EventApi[]>([]);
 
-  constructor(private changeDetector: ChangeDetectorRef) {}
+  constructor(private changeDetector: ChangeDetectorRef, private eventService: EventService) {}
+
+  ngOnInit() {
+    // Load events from backend when component initializes
+    this.loadEventsFromBackend();
+  }
 
   ngAfterViewInit() {
-    // Set height dynamically if needed
     const calendarEl = document.querySelector('.fc') as HTMLElement;
     if (calendarEl) {
       calendarEl.style.height = '70vh'; // Set height to 70% of the viewport height
     }
+  }
+
+  loadEventsFromBackend() {
+    this.eventService.getEvents().subscribe(
+      (events: Event[]) => {
+        const formattedEvents = events.map(event => ({
+          id: event.id.toString(),
+          title: event.title,
+          start: event.startDate,
+          end: event.endDate,
+          allDay: event.allDay,
+          backgroundColor: event.color,
+          extendedProps: {
+            officeName: event.officeName,
+            attendees: event.attendees
+          }
+        }));
+        this.calendarOptions.mutate((options) => {
+          options.initialEvents = formattedEvents;
+        });
+      },
+      error => {
+        console.error('Error loading events from backend!', error);
+      }
+    );
   }
 
   handleCalendarToggle() {
@@ -90,32 +119,49 @@ export class CalendarComponent implements AfterViewInit {
     calendarApi.unselect(); // Clear date selection
 
     if (title && officeName && attendees) {
-      calendarApi.addEvent({
-        id: createEventId(),
+      const newEvent: Event = {
+        id: 0, // Backend will assign a real ID
         title,
-        start: this.selectedDateRange.startStr,
-        end: this.selectedDateRange.endStr,
+        startDate: this.selectedDateRange.startStr,
+        endDate: this.selectedDateRange.endStr,
         allDay: this.selectedDateRange.allDay,
-        backgroundColor: color, // Apply the selected color
-        extendedProps: {
-          officeName,
-          attendees
-        }
+        officeName,
+        attendees,
+        color
+      };
+
+      // Create the event on the backend
+      this.eventService.createEvent(newEvent).subscribe((createdEvent: Event) => {
+        calendarApi.addEvent({
+          id: createdEvent.id.toString(), // Use the ID from the backend
+          title: createdEvent.title,
+          start: createdEvent.startDate,
+          end: createdEvent.endDate,
+          allDay: createdEvent.allDay,
+          backgroundColor: createdEvent.color,
+          extendedProps: {
+            officeName: createdEvent.officeName,
+            attendees: createdEvent.attendees
+          }
+        });
+        this.showEventForm = false; // Hide the form after submission
       });
     }
-
-    this.showEventForm = false; // Hide the form after submission
   }
 
   handleEventClick(clickInfo: EventClickArg) {
     if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
+      const eventId = +clickInfo.event.id;
+
+      // Remove from backend
+      this.eventService.deleteEvent(eventId).subscribe(() => {
+        clickInfo.event.remove(); // Remove from the calendar
+      });
     }
   }
 
   handleEvents(events: EventApi[]) {
     this.currentEvents.set(events);
-    this.changeDetector.detectChanges(); // Update view
   }
 
   handleColorChange() {
