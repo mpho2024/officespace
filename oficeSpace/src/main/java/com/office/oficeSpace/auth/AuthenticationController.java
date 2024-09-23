@@ -12,13 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.List;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +29,6 @@ public class AuthenticationController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
@@ -41,7 +36,6 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.register(request));
     }
 
-   // @CrossOrigin(origins = "http://localhost:4200/**", allowCredentials = "true")
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request
@@ -50,12 +44,11 @@ public class AuthenticationController {
     }
 
     @GetMapping("/user/id")
-    public ResponseEntity<Integer> getLoggedInUserId(HttpServletRequest request) {
+    public ResponseEntity<String> getLoggedInUserId(HttpServletRequest request) {
         String token = request.getHeader("Authorization").substring(7);
-        Integer userId = jwtService.extractUserId(token);
+        String userId = jwtService.extractUserId(token);
         return ResponseEntity.ok(userId);
     }
-
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -64,10 +57,10 @@ public class AuthenticationController {
 
     // New method to delete a user by ID
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<Map<String, String>> deleteUserById(@PathVariable Integer id) {
+    public ResponseEntity<Map<String, String>> deleteUserById(@PathVariable String id) { // Change to String
         Map<String, String> response = new HashMap<>();
         try {
-            service.deleteUserById(id);
+            service.deleteUserById(id); // Update to use String
             response.put("message", "User has been deleted successfully");
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
@@ -76,6 +69,4 @@ public class AuthenticationController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }

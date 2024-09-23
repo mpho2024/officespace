@@ -1,4 +1,5 @@
 package com.office.oficeSpace.configs;
+
 import com.office.oficeSpace.entity.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -27,19 +28,15 @@ public class JwtService {
         return claimResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails, Integer userId, Role role) {
+    public String generateToken(UserDetails userDetails, String userId, Role role) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("userId", userId);
         extraClaims.put("role", role.name()); // Add role to claims
         return generateToken(extraClaims, userDetails);
     }
 
-    public String generateToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails
-    ) {
-        return Jwts
-                .builder()
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -62,8 +59,7 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
@@ -75,10 +71,11 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public Integer extractUserId(String token) {
-        return extractClaim(token, claims -> claims.get("userId", Integer.class));
+    public String extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", String.class));
     }
 
     public Role extractRole(String token) {
         return extractClaim(token, claims -> Role.valueOf(claims.get("role", String.class)));
-    }}
+    }
+}
